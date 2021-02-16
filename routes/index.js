@@ -32,6 +32,10 @@ router.post('/tokens', function(req, res) {
         return;
     }
 
+    if (!claims.exp) {
+        delete claims.exp;
+    }
+
     try {
         var token = jwt.encode(claims, key, alg);
         var response = {
