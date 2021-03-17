@@ -21,6 +21,11 @@ var masterViewModel = function(standardClaims, additionalClaims) {
 
         var iat = new Date(this.standardClaims.issuedAt()).getTime();
         var exp = new Date(this.standardClaims.expiration()).getTime();
+        var sub = this.standardClaims.subject()
+
+        if (!isNaN(sub) && !sub.startsWith('0')) {
+            sub = parseInt(sub)
+        }
 
         var claimSet =
             {
@@ -28,7 +33,7 @@ var masterViewModel = function(standardClaims, additionalClaims) {
                 iat : Math.floor(iat / 1000),
                 exp : Math.floor(exp / 1000),
                 aud : this.standardClaims.audience(),
-                sub : this.standardClaims.subject()
+                sub : sub
             };
 
         var claims = this.additionalClaims();
