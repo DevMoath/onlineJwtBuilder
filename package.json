@@ -4,7 +4,7 @@
     "private": true,
     "scripts": {
         "start": "node bin/www.js",
-        "fixer": "npx prettier --write public/js/viewModels.js bin routes app.js package.json"
+        "fixer": "npx prettier --write ."
     },
     "dependencies": {
         "body-parser": "^1.19.0",
