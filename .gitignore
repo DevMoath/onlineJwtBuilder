@@ -154,6 +154,7 @@ Homestead.yaml
 Homestead.json
 /.vagrant
 .phpunit.result.cache
+.php_cs.cache
 
 # Laravel IDE helper
 *.meta.*
