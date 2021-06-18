@@ -18,62 +18,10 @@
                 crossorigin="anonymous"
                 referrerpolicy="no-referrer"
                 defer></script>
-        <script src="/js/common.js" defer></script>
-        <script src="/js/viewModels.js" defer></script>
         <script src="/js/base64.js" defer></script>
-        <script defer>
-            window.onload = function() {
-                $(function() {
-                    const copyButton = document.getElementById('copy-button');
-
-                    copyButton.addEventListener('click', function() {
-                        const createdJwt = document.getElementById('created-jwt');
-                        const copyText = document.getElementById('hidden_input');
-
-                        copyText.value = createdJwt.innerText;
-
-                        copyText.select();
-                        copyText.setSelectionRange(0, 99999);
-
-                        document.execCommand('copy');
-
-                        copyText.value = '';
-
-                        copyButton.innerText = 'Copied';
-
-                        setTimeout(function() {
-                            copyButton.innerText = 'Copy JWT to Clipboard';
-                        }, 3000);
-                    });
-
-                    const viewModel = createMaster();
-                    ko.applyBindings(viewModel);
-
-                    viewModel.key('qwertyuiopasdfghjklzxcvbnm123456');
-                    viewModel.issuedAtSetNow();
-                    viewModel.expirationSetOneYear();
-
-                    $('a').on('click', function(event) {
-                        const href = event.currentTarget.href;
-                        if (href.indexOf('#') === href.length - 1) {
-                            event.preventDefault();
-                        }
-                    });
-                });
-            };
-        </script>
-
-        <style>
-            body {
-                padding-top: 50px;
-            }
-
-            .body-template {
-                padding: 40px 15px;
-            }
-        </style>
+        <script src="/js/index.js" defer></script>
     </head>
-    <body>
+    <body style='padding-top: 50px'>
         <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
             <div class="container">
                 <div class="navbar-header">
@@ -94,7 +42,7 @@
             </div>
         </div>
         <div class="container">
-            <div class="body-template">
+            <div style='padding: 40px 15px'>
                 <form class="form-horizontal" role="form">
                     <div class="panel panel-primary">
                         <div class="panel-heading">

@@ -1,3 +1,24 @@
+function addMinutes(date, minutes) {
+    return new Date(date.getTime() + minutes * 60000);
+}
+
+Array.prototype.clear = function () {
+    while (this.length > 0) {
+        this.pop();
+    }
+};
+
+function createKey(charCount) {
+    let key = '';
+    const possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+
+    for (let i = 0; i < charCount; i++) {
+        key += possible.charAt(Math.floor(Math.random() * possible.length));
+    }
+
+    return key;
+}
+
 var masterViewModel = function (standardClaims, additionalClaims) {
     var self = this;
 
@@ -234,4 +255,44 @@ var claimViewModel = function (claimType, value) {
 
     self.claimType = ko.observable(claimType);
     self.value = ko.observable(value);
+};
+
+window.onload = function () {
+    $(function () {
+        const copyButton = document.getElementById('copy-button');
+
+        copyButton.addEventListener('click', function () {
+            const createdJwt = document.getElementById('created-jwt');
+            const copyText = document.getElementById('hidden_input');
+
+            copyText.value = createdJwt.innerText;
+
+            copyText.select();
+            copyText.setSelectionRange(0, 99999);
+
+            document.execCommand('copy');
+
+            copyText.value = '';
+
+            copyButton.innerText = 'Copied';
+
+            setTimeout(function () {
+                copyButton.innerText = 'Copy JWT to Clipboard';
+            }, 3000);
+        });
+
+        const viewModel = createMaster();
+        ko.applyBindings(viewModel);
+
+        viewModel.key('qwertyuiopasdfghjklzxcvbnm123456');
+        viewModel.issuedAtSetNow();
+        viewModel.expirationSetOneYear();
+
+        $('a').on('click', function (event) {
+            const href = event.currentTarget.href;
+            if (href.indexOf('#') === href.length - 1) {
+                event.preventDefault();
+            }
+        });
+    });
 };
