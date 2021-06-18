@@ -4,7 +4,65 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>Online JWT Builder</title>
-        <link href="/css/bootstrap.min.css" rel="stylesheet">
+        <link rel="stylesheet"
+              href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+              integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
+              crossorigin="anonymous">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js" defer></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
+                integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+                crossorigin="anonymous"
+                defer></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/knockout/3.1.0/knockout-min.js"
+                integrity="sha512-0yF0k0IbnVR97f44Xlb4KRa3PY7X1zt8RO+ybZ2wky4rRcSFXuLFHS372a8XpvsAnsxZ16jba4D9E2iMNUc/LA=="
+                crossorigin="anonymous"
+                referrerpolicy="no-referrer"
+                defer></script>
+        <script src="/js/common.js" defer></script>
+        <script src="/js/viewModels.js" defer></script>
+        <script src="/js/base64.js" defer></script>
+        <script defer>
+            window.onload = function() {
+                $(function() {
+                    const copyButton = document.getElementById('copy-button');
+
+                    copyButton.addEventListener('click', function() {
+                        const createdJwt = document.getElementById('created-jwt');
+                        const copyText = document.getElementById('hidden_input');
+
+                        copyText.value = createdJwt.innerText;
+
+                        copyText.select();
+                        copyText.setSelectionRange(0, 99999);
+
+                        document.execCommand('copy');
+
+                        copyText.value = '';
+
+                        copyButton.innerText = 'Copied';
+
+                        setTimeout(function() {
+                            copyButton.innerText = 'Copy JWT to Clipboard';
+                        }, 3000);
+                    });
+
+                    const viewModel = createMaster();
+                    ko.applyBindings(viewModel);
+
+                    viewModel.key('qwertyuiopasdfghjklzxcvbnm123456');
+                    viewModel.issuedAtSetNow();
+                    viewModel.expirationSetOneYear();
+
+                    $('a').on('click', function(event) {
+                        const href = event.currentTarget.href;
+                        if (href.indexOf('#') === href.length - 1) {
+                            event.preventDefault();
+                        }
+                    });
+                });
+            };
+        </script>
+
         <style>
             body {
                 padding-top: 50px;
@@ -316,51 +374,5 @@
                 </form>
             </div>
         </div>
-
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
-        <script src="/js/bootstrap.min.js"></script>
-        <script type='text/javascript' src='/js/knockout-3.1.0.js'></script>
-        <script src="/js/common.js"></script>
-        <script src="/js/viewModels.js"></script>
-        <script src="/js/base64.js"></script>
-        <script>
-            const copyButton = document.getElementById('copy-button');
-
-            copyButton.addEventListener('click', function() {
-                const createdJwt = document.getElementById('created-jwt');
-                const copyText = document.getElementById('hidden_input');
-
-                copyText.value = createdJwt.innerText;
-
-                copyText.select();
-                copyText.setSelectionRange(0, 99999);
-
-                document.execCommand('copy');
-
-                copyText.value = '';
-
-                copyButton.innerText = 'Copied';
-
-                setTimeout(function() {
-                    copyButton.innerText = 'Copy JWT to Clipboard';
-                }, 3000);
-            });
-
-            $(function() {
-                var viewModel = createMaster();
-                ko.applyBindings(viewModel);
-
-                viewModel.key('qwertyuiopasdfghjklzxcvbnm123456');
-                viewModel.issuedAtSetNow();
-                viewModel.expirationSetOneYear();
-
-                $('a').on('click', function(event) {
-                    var href = event.currentTarget.href;
-                    if (href.indexOf('#') === href.length - 1) {
-                        event.preventDefault();
-                    }
-                });
-            });
-        </script>
     </body>
 </html>
