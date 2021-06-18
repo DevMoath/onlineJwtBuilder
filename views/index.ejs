@@ -2,14 +2,18 @@
 <html lang="en">
     <head>
         <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <meta name="description"
-              content="Online JSON Web Token Builder, for creating signed test JWTs, including standard and custom claims; built by Jamie Kurtz">
-        <meta name="author" content="Jamie Kurtz">
-        <title>Online JWT Builder - Jamie Kurtz</title>
+        <title>Online JWT Builder</title>
         <link href="/css/bootstrap.min.css" rel="stylesheet">
-        <link href="/css/style.css" rel="stylesheet">
+        <style>
+            body {
+                padding-top: 50px;
+            }
+
+            .body-template {
+                padding: 40px 15px;
+            }
+        </style>
     </head>
     <body>
         <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
@@ -150,7 +154,7 @@
                                             </td>
                                             <td>
                                                 <a href="#" title="delete claim" style="float:right"
-                                                   data-bind="click: $parent.removeClaim"><i class="glyphicon glyphicon-remove"></i></a>
+                                                   data-bind="click: $parent.removeClaim">x</a>
                                             </td>
                                         </tr>
                                         <!-- /ko -->
@@ -294,6 +298,7 @@
                             </div>
                             <div class="col-sm-8 col-sm-offset-1">
                                 <pre data-bind="text: createdJwt" style="height: 8pc" id="created-jwt"></pre>
+                                <input type="text" id="hidden_input" style='border: none; color: white; outline: none'>
                             </div>
                             <div class="col-sm-1">
                                 <p>
@@ -310,22 +315,35 @@
                     </div>
                 </form>
             </div>
-        </div><!-- /.container -->
+        </div>
 
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
         <script src="/js/bootstrap.min.js"></script>
         <script type='text/javascript' src='/js/knockout-3.1.0.js'></script>
         <script src="/js/common.js"></script>
         <script src="/js/viewModels.js"></script>
-        <script src="/js/ZeroClipboard.js"></script>
         <script src="/js/base64.js"></script>
         <script>
-            var client = new ZeroClipboard(document.getElementById('copy-button'));
-            client.on('ready', function(readyEvent) {
-                client.on('aftercopy', function(event) {
-                    event.target.style.display = 'none';
-                    alert('Copied text to clipboard: ' + event.data['text/plain']);
-                });
+            const copyButton = document.getElementById('copy-button');
+
+            copyButton.addEventListener('click', function() {
+                const createdJwt = document.getElementById('created-jwt');
+                const copyText = document.getElementById('hidden_input');
+
+                copyText.value = createdJwt.innerText;
+
+                copyText.select();
+                copyText.setSelectionRange(0, 99999);
+
+                document.execCommand('copy');
+
+                copyText.value = '';
+
+                copyButton.innerText = 'Copied';
+
+                setTimeout(function() {
+                    copyButton.innerText = 'Copy JWT to Clipboard';
+                }, 3000);
             });
 
             $(function() {
