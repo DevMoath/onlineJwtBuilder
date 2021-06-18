@@ -1,302 +1,348 @@
-
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="Online JSON Web Token Builder, for creating signed test JWTs, including standard and custom claims; built by Jamie Kurtz">
-    <meta name="author" content="Jamie Kurtz">
-    <!--<link rel="shortcut icon" href="../../assets/ico/favicon.ico">-->
-
-    <title>Online JWT Builder - Jamie Kurtz</title>
-
-    <!-- Bootstrap core CSS -->
-    <link href="/css/bootstrap.min.css" rel="stylesheet">
-    <link href="/css/style.css" rel="stylesheet">
-
-</head>
-
-<body>
-
-<div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
-    <div class="container">
-        <div class="navbar-header">
-            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                <span class="sr-only">Toggle navigation</span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-            </button>
-            <a class="navbar-brand" href="/">JSON Web Token Builder</a>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="description"
+              content="Online JSON Web Token Builder, for creating signed test JWTs, including standard and custom claims; built by Jamie Kurtz">
+        <meta name="author" content="Jamie Kurtz">
+        <title>Online JWT Builder - Jamie Kurtz</title>
+        <link href="/css/bootstrap.min.css" rel="stylesheet">
+        <link href="/css/style.css" rel="stylesheet">
+    </head>
+    <body>
+        <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+            <div class="container">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="/">JSON Web Token Builder</a>
+                </div>
+                <div class="collapse navbar-collapse">
+                    <ul class="nav navbar-nav">
+                        <li class="active"><a href="#">Home</a></li>
+                        <li><a href="/about">About</a></li>
+                    </ul>
+                </div>
+            </div>
         </div>
-        <div class="collapse navbar-collapse">
-            <ul class="nav navbar-nav">
-                <li class="active"><a href="#">Home</a></li>
-                <li><a href="/about">About</a></li>
-            </ul>
-        </div><!--/.nav-collapse -->
-    </div>
-</div>
+        <div class="container">
+            <div class="body-template">
+                <form class="form-horizontal" role="form">
+                    <div class="panel panel-primary">
+                        <div class="panel-heading">
+                            Standard JWT Claims
+                        </div>
+                        <div class="row">&nbsp;</div>
+                        <div class="form-group">
+                            <label for="issuer" class="col-sm-2 control-label">Issuer</label>
+                            <div class="col-sm-4">
+                                <input type="text"
+                                       class="form-control"
+                                       id="issuer"
+                                       data-bind="value: standardClaims.issuer, valueUpdate:'afterkeydown'">
+                            </div>
+                            <p class="col-sm-5 text-success">Identifier (or, name) of the server or system issuing the
+                                token. Typically a DNS name, but doesn't have to be.</p>
+                        </div>
+                        <div class="form-group">
+                            <label for="issuedAt" class="col-sm-2  control-label">Issued At</label>
+                            <div class="col-sm-4">
+                                <input type="text"
+                                       class="form-control"
+                                       id="issuedAt"
+                                       data-bind="value: standardClaims.issuedAt, valueUpdate:'afterkeydown'">
+                            </div>
+                            <div class="col-sm-5">
+                                <p class="text-success">Date/time when the token was issued. (defaults to now)
+                                    &nbsp;&nbsp;
+                                    <button type="button"
+                                            class="btn btn-success btn-xs"
+                                            data-bind="click:issuedAtSetNow">now
+                                    </button>
+                                </p>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="subject" class="col-sm-2 control-label">Expiration</label>
+                            <div class="col-sm-4">
+                                <input type="text"
+                                       class="form-control"
+                                       id="expiration"
+                                       data-bind="value: standardClaims.expiration, valueUpdate:'afterkeydown'">
+                            </div>
+                            <div class="col-sm-5">
+                                <p class="text-success">Date/time at which point the token is no longer valid. (defaults
+                                    to one year from now)
+                                    &nbsp;&nbsp;
+                                    <button type="button"
+                                            class="btn btn-success btn-xs"
+                                            data-bind="click:expirationSetNow">now
+                                    </button>
+                                    <button type="button"
+                                            class="btn btn-success btn-xs"
+                                            data-bind="click:expirationSetTwentyMinutes">in 20 minutes
+                                    </button>
+                                    <button type="button"
+                                            class="btn btn-success btn-xs"
+                                            data-bind="click:expirationSetOneYear">in 1 year
+                                    </button>
+                                </p>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="audience" class="col-sm-2 control-label">Audience</label>
+                            <div class="col-sm-4">
+                                <input type="text"
+                                       class="form-control"
+                                       id="audience"
+                                       data-bind="value: standardClaims.audience, valueUpdate:'afterkeydown'">
+                            </div>
+                            <p class="col-sm-5 text-success">Intended recipient of this token; can be any string, as
+                                long as the other end uses the same string when validating the token. Typically a DNS
+                                name.</p>
+                        </div>
+                        <div class="form-group">
+                            <label for="subject" class="col-sm-2 control-label">Subject</label>
+                            <div class="col-sm-4">
+                                <input type="text"
+                                       class="form-control"
+                                       id="subject"
+                                       data-bind="value: standardClaims.subject, valueUpdate:'afterkeydown'">
+                            </div>
+                            <p class="col-sm-5 text-success">Identifier (or, name) of the user this token
+                                represents.</p>
+                        </div>
+                    </div>
+                    <div class="panel panel-primary">
+                        <div class="panel-heading">
+                            Additional Claims
+                        </div>
+                        <div class="row">&nbsp;</div>
+                        <div class="form-group">
+                            <div class="col-sm-5 col-sm-offset-1">
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th>Claim Type</th>
+                                            <th>Value</th>
+                                            <th>&nbsp;</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <!-- ko foreach:additionalClaims -->
+                                        <tr>
+                                            <td style="width:150px">
+                                                <input type="text"
+                                                       class="form-control"
+                                                       data-bind="value: claimType, valueUpdate:'afterkeydown'">
 
-<div class="container">
-
-    <div class="body-template">
-
-        <form class="form-horizontal" role="form">
-            <div class="panel panel-primary">
-                <div class="panel-heading">
-                    Standard JWT Claims
-                </div>
-                <div class="row">&nbsp;</div>
-                <div class="form-group">
-                    <label for="issuer" class="col-sm-2 control-label">Issuer</label>
-                    <div class="col-sm-4">
-                        <input type="text"
-                               class="form-control"
-                               id="issuer"
-                               data-bind="value: standardClaims.issuer, valueUpdate:'afterkeydown'">
+                                            </td>
+                                            <td>
+                                                <input type="text"
+                                                       class="form-control"
+                                                       data-bind="value: value, valueUpdate:'afterkeydown'">
+                                            </td>
+                                            <td>
+                                                <a href="#" title="delete claim" style="float:right"
+                                                   data-bind="click: $parent.removeClaim"><i class="glyphicon glyphicon-remove"></i></a>
+                                            </td>
+                                        </tr>
+                                        <!-- /ko -->
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="col-sm-5">
+                                <p class="text-success">Use this section to define 0 or more custom claims for your
+                                    token.
+                                    The claim type can be anything, and so can the value.</p>
+                                <p class="text-success">If recipient of the token is a .NET Framework application,
+                                    you might want to follow the Microsoft
+                                    <a href="http://msdn.microsoft.com/en-us/library/system.identitymodel.claims.claimtypes(v=vs.110).aspx">ClaimType
+                                        names</a>.
+                                    You can also use the .NET-oriented claim buttons below.</p>
+                                <p>&nbsp;</p>
+                                <p>
+                                    <button type="button"
+                                            class="btn btn-success btn-xs"
+                                            data-bind="click:clearAllAdditionalClaims">clear all
+                                    </button>
+                                    <button type="button"
+                                            class="btn btn-success btn-xs"
+                                            data-bind="click:addOneAdditionalClaim">add one
+                                    </button>
+                                    <button type="button"
+                                            class="btn btn-success btn-xs"
+                                            data-bind="click:addEmailAdditionalClaim">add email claim
+                                    </button>
+                                </p>
+                                <p>
+                                    <button type="button"
+                                            class="btn btn-success btn-xs"
+                                            data-bind="click:addNameNetAdditionalClaim">add name claim (.NET)
+                                    </button>
+                                    <button type="button"
+                                            class="btn btn-success btn-xs"
+                                            data-bind="click:addRoleNetAdditionalClaim">add role claim (.NET)
+                                    </button>
+                                    <button type="button"
+                                            class="btn btn-success btn-xs"
+                                            data-bind="click:addEmailNetAdditionalClaim">add email claim (.NET)
+                                    </button>
+                                </p>
+                            </div>
+                        </div>
                     </div>
-                    <p class="col-sm-5 text-success">Identifier (or, name) of the server or system issuing the token. Typically a DNS name, but doesn't have to be.</p>
-                </div>
-                <div class="form-group">
-                    <label for="issuedAt" class="col-sm-2  control-label">Issued At</label>
-                    <div class="col-sm-4">
-                        <input type="text"
-                               class="form-control"
-                               id="issuedAt"
-                               data-bind="value: standardClaims.issuedAt, valueUpdate:'afterkeydown'">
-                    </div>
-                    <div class="col-sm-5">
-                        <p class="text-success">Date/time when the token was issued. (defaults to now)
-                            &nbsp;&nbsp;
-                            <button type="button" class="btn btn-success btn-xs" data-bind="click:issuedAtSetNow">now</button>
-                        </p>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label for="subject" class="col-sm-2 control-label">Expiration</label>
-                    <div class="col-sm-4">
-                        <input type="text"
-                               class="form-control"
-                               id="expiration"
-                               data-bind="value: standardClaims.expiration, valueUpdate:'afterkeydown'">
-                    </div>
-                    <div class="col-sm-5">
-                        <p class="text-success">Date/time at which point the token is no longer valid. (defaults to one year from now)
-                            &nbsp;&nbsp;
-                            <button type="button" class="btn btn-success btn-xs" data-bind="click:expirationSetNow">now</button>
-                            <button type="button" class="btn btn-success btn-xs" data-bind="click:expirationSetTwentyMinutes">in 20 minutes</button>
-                            <button type="button" class="btn btn-success btn-xs" data-bind="click:expirationSetOneYear">in 1 year</button>
-                        </p>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label for="audience" class="col-sm-2 control-label">Audience</label>
-                    <div class="col-sm-4">
-                        <input type="text"
-                               class="form-control"
-                               id="audience"
-                               data-bind="value: standardClaims.audience, valueUpdate:'afterkeydown'">
-                    </div>
-                    <p class="col-sm-5 text-success">Intended recipient of this token; can be any string, as long as the other end uses the same string when validating the token. Typically a DNS name.</p>
-                </div>
-                <div class="form-group">
-                    <label for="subject" class="col-sm-2 control-label">Subject</label>
-                    <div class="col-sm-4">
-                        <input type="text"
-                               class="form-control"
-                               id="subject"
-                               data-bind="value: standardClaims.subject, valueUpdate:'afterkeydown'">
-                    </div>
-                    <p class="col-sm-5 text-success">Identifier (or, name) of the user this token represents.</p>
-                </div>
-            </div>
-
-            <div class="panel panel-primary">
-                <div class="panel-heading">
-                    Additional Claims
-                </div>
-                <div class="row">&nbsp;</div>
-                <div class="form-group">
-                    <div class="col-sm-5 col-sm-offset-1">
-                        <table class="table">
-                            <thead>
-                                <tr>
-                                    <th>Claim Type</th>
-                                    <th>Value</th>
-                                    <th>&nbsp;</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <!-- ko foreach:additionalClaims -->
-                                <tr>
-                                    <td style="width:150px">
-                                        <input type="text"
-                                               class="form-control"
-                                               data-bind="value: claimType, valueUpdate:'afterkeydown'">
-
-                                    </td>
-                                    <td>
-                                        <input type="text"
-                                               class="form-control"
-                                               data-bind="value: value, valueUpdate:'afterkeydown'">
-                                    </td>
-                                    <td>
-                                        <a href="#" title="delete claim" style="float:right"
-                                           data-bind="click: $parent.removeClaim"><i class="glyphicon glyphicon-remove"></i></a>
-                                    </td>
-                                </tr>
-                                <!-- /ko -->
-                            </tbody>
-                        </table>
-                    </div>
-                    <div class="col-sm-5">
-                        <p class="text-success">Use this section to define 0 or more custom claims for your token.
-                            The claim type can be anything, and so can the value.</p>
-                        <p class="text-success">If recipient of the token is a .NET Framework application,
-                            you might want to follow the Microsoft <a href="http://msdn.microsoft.com/en-us/library/system.identitymodel.claims.claimtypes(v=vs.110).aspx">ClaimType names</a>.
-                            You can also use the .NET-oriented claim buttons below.</p>
-                        <p>&nbsp;</p>
-                        <p>
-                            <button type="button" class="btn btn-success btn-xs" data-bind="click:clearAllAdditionalClaims">clear all</button>
-                            <button type="button" class="btn btn-success btn-xs" data-bind="click:addOneAdditionalClaim">add one</button>
-                            <button type="button" class="btn btn-success btn-xs" data-bind="click:addEmailAdditionalClaim">add email claim</button></p>
-                        <p>
-                            <button type="button" class="btn btn-success btn-xs" data-bind="click:addNameNetAdditionalClaim">add name claim (.NET)</button>
-                            <button type="button" class="btn btn-success btn-xs" data-bind="click:addRoleNetAdditionalClaim">add role claim (.NET)</button>
-                            <button type="button" class="btn btn-success btn-xs" data-bind="click:addEmailNetAdditionalClaim">add email claim (.NET)</button></p>
-                    </div>
-                </div>
-            </div>
-
-            <div class="panel panel-primary">
-                <div class="panel-heading">
-                    Generated Claim Set (plain text)
-                </div>
-                <div class="row">&nbsp;</div>
-                <div class="form-group">
-                    <div class="col-sm-8 col-sm-offset-1">
-                        <pre data-bind="text: generatedClaimSetDisplay" />
-                    </div>
-                    <div class="col-sm-2">
-                        <p class=" text-success">This section displays the claims that will be signed and base64-encoded into a complete JSON Web Token.</p>
-                        <p>&nbsp;</p>
-                        <p><em>
+                    <div class="panel panel-primary">
+                        <div class="panel-heading">
+                            Generated Claim Set (plain text)
+                        </div>
+                        <div class="row">&nbsp;</div>
+                        <div class="form-group">
+                            <div class="col-sm-8 col-sm-offset-1">
+                                <pre data-bind="text: generatedClaimSetDisplay" />
+                            </div>
+                            <div class="col-sm-2">
+                                <p class=" text-success">This section displays the claims that will be signed and
+                                    base64-encoded into a complete JSON Web Token.</p>
+                                <p>&nbsp;</p>
+                                <p><em>
                                 <ul data-bind="foreach: warnings">
                                     <li><span class="text-danger" data-bind="html: $data"> </span></li>
                                 </ul>
-                         </em></p>
-                    </div>
-                </div>
-            </div>
-
-            <div class="panel panel-primary">
-                <div class="panel-heading">
-                    Signed JSON Web Token
-                </div>
-                <div class="row">&nbsp;</div>
-                <div class="form-group form-inline">
-                    <label for="key" class="col-sm-2 control-label">Key</label>
-                    <div class="col-sm-6">
-                        <input type="text"
-                               id="key"
-                               class="form-control"
-                               style="width: 90%"
-                               data-bind="value: key, valueUpdate:'afterkeydown'">
-                        <label for="key" class="control-label"><span class="badge pull-right" data-bind="text: keyLength"></span></label>
-
-                    </div>
-                    <div class="col-sm-1">
-                        <div class="dropdown">
-                            <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown">
-                                <span data-bind="text: selectedAlgorithm"></span>
-                                <span class="caret"></span>
-                            </button>
-                            <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1" data-bind="foreach: algorithms">
-                                <li role="presentation"><a role="menuitem" tabindex="-1" href="#" data-bind="text: $data, click:$root.toggleAlgorithm"></a></li>
-                            </ul>
+                                </em></p>
+                            </div>
                         </div>
                     </div>
-                    <div class="col-sm-3">
-                        <!-- Split button -->
-                        <div class="btn-group">
-                            <button type="button" class="btn btn-success" data-bind="click:createJwt">Create Signed JWT</button>
-                            <button type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown">
-                                <span class="caret"></span>
-                                <span class="sr-only">Toggle Dropdown</span>
-                            </button>
-                            <ul class="dropdown-menu" role="menu" >
-                                <li><a href="#" data-bind="click:generateSymmetricKey(32)">Generate 32-byte key</a></li>
-                                <li><a href="#" data-bind="click:generateSymmetricKey(64)">Generate 64-byte key</a></li>
-                                <li><a href="#" data-bind="click:generateSymmetricKey(128)">Generate 128-byte key</a></li>
-                                <li class="divider"></li>
-                                <li><a href="#" data-bind="click:toggleBase64"><span class="glyphicon glyphicon-ok" data-bind="visible: isBase64Encoding"></span>&nbsp;Base64-encode the token</a></li>
-                            </ul>
+                    <div class="panel panel-primary">
+                        <div class="panel-heading">
+                            Signed JSON Web Token
+                        </div>
+                        <div class="row">&nbsp;</div>
+                        <div class="form-group form-inline">
+                            <label for="key" class="col-sm-2 control-label">Key</label>
+                            <div class="col-sm-6">
+                                <input type="text"
+                                       id="key"
+                                       class="form-control"
+                                       style="width: 90%"
+                                       data-bind="value: key, valueUpdate:'afterkeydown'">
+                                <label for="key" class="control-label">
+                                    <span class="badge pull-right" data-bind="text: keyLength"></span>
+                                </label>
+
+                            </div>
+                            <div class="col-sm-1">
+                                <div class="dropdown">
+                                    <button class="btn btn-default dropdown-toggle"
+                                            type="button"
+                                            id="dropdownMenu1"
+                                            data-toggle="dropdown">
+                                        <span data-bind="text: selectedAlgorithm"></span>
+                                        <span class="caret"></span>
+                                    </button>
+                                    <ul class="dropdown-menu"
+                                        role="menu"
+                                        aria-labelledby="dropdownMenu1"
+                                        data-bind="foreach: algorithms">
+                                        <li role="presentation">
+                                            <a role="menuitem"
+                                               tabindex="-1"
+                                               href="#"
+                                               data-bind="text: $data, click:$root.toggleAlgorithm"></a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="col-sm-3">
+                                <div class="btn-group">
+                                    <button type="button" class="btn btn-success" data-bind="click:createJwt">Create
+                                        Signed JWT
+                                    </button>
+                                    <button type="button"
+                                            class="btn btn-success dropdown-toggle"
+                                            data-toggle="dropdown">
+                                        <span class="caret"></span>
+                                        <span class="sr-only">Toggle Dropdown</span>
+                                    </button>
+                                    <ul class="dropdown-menu" role="menu">
+                                        <li><a href="#" data-bind="click:generateSymmetricKey(32)">Generate 32-byte
+                                                key</a></li>
+                                        <li><a href="#" data-bind="click:generateSymmetricKey(64)">Generate 64-byte
+                                                key</a></li>
+                                        <li><a href="#" data-bind="click:generateSymmetricKey(128)">Generate 128-byte
+                                                key</a></li>
+                                        <li class="divider"></li>
+                                        <li>
+                                            <a href="#"
+                                               data-bind="click:toggleBase64">
+                                                <span class="glyphicon glyphicon-ok"
+                                                      data-bind="visible: isBase64Encoding"></span>&nbsp;Base64-encode
+                                                the token
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                &nbsp;
+                            </div>
+                            <div class="col-sm-8 col-sm-offset-1">
+                                <pre data-bind="text: createdJwt" style="height: 8pc" id="created-jwt"></pre>
+                            </div>
+                            <div class="col-sm-1">
+                                <p>
+                                    <button type="button"
+                                            id="copy-button"
+                                            class="btn btn-default"
+                                            data-clipboard-target="created-jwt"
+                                            title="Click to copy the token.">
+                                        Copy JWT to Clipboard
+                                    </button>
+                                </p>
+                            </div>
                         </div>
                     </div>
-                    <div class="col-md-12">
-                        &nbsp;
-                    </div>
-                    <div class="col-sm-8 col-sm-offset-2">
-                        <pre data-bind="text: createdJwt" style="height: 8pc" id="created-jwt" />
-                    </div>
-                    <div class="col-sm-1">
-                        <p><button type="button" id="copy-button" class="btn btn-default btn-xs" data-clipboard-target="created-jwt" title="Click to copy the token.">Copy JWT<Br>to Clipboard</button></p>
-                    </div>
-                </div>
+                </form>
             </div>
+        </div><!-- /.container -->
 
-        </form>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+        <script src="/js/bootstrap.min.js"></script>
+        <script type='text/javascript' src='/js/knockout-3.1.0.js'></script>
+        <script src="/js/common.js"></script>
+        <script src="/js/viewModels.js"></script>
+        <script src="/js/ZeroClipboard.js"></script>
+        <script src="/js/base64.js"></script>
+        <script>
+            var client = new ZeroClipboard(document.getElementById('copy-button'));
+            client.on('ready', function(readyEvent) {
+                client.on('aftercopy', function(event) {
+                    event.target.style.display = 'none';
+                    alert('Copied text to clipboard: ' + event.data['text/plain']);
+                });
+            });
 
+            $(function() {
+                var viewModel = createMaster();
+                ko.applyBindings(viewModel);
 
+                viewModel.key('qwertyuiopasdfghjklzxcvbnm123456');
+                viewModel.issuedAtSetNow();
+                viewModel.expirationSetOneYear();
 
-    </div>
-
-</div><!-- /.container -->
-
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
-<script src="/js/bootstrap.min.js"></script>
-<script type='text/javascript' src='/js/knockout-3.1.0.js'></script>
-<script src="/js/common.js"></script>
-<script src="/js/viewModels.js"></script>
-<script src="/js/ZeroClipboard.js"></script>
-<script src="/js/base64.js"></script>
-
-
-<script>
-
-    var client = new ZeroClipboard( document.getElementById("copy-button") );
-    client.on( "ready", function( readyEvent ) {
-        // alert( "ZeroClipboard SWF is ready!" );
-
-        client.on( "aftercopy", function( event ) {
-            // `this` === `client`
-            // `event.target` === the element that was clicked
-            event.target.style.display = "none";
-            alert("Copied text to clipboard: " + event.data["text/plain"] );
-        } );
-    } );
-
-    $(function() {
-        var viewModel = createMaster();
-        ko.applyBindings(viewModel);
-
-        viewModel.key("qwertyuiopasdfghjklzxcvbnm123456");
-        viewModel.issuedAtSetNow();
-        viewModel.expirationSetOneYear();
-
-        $('a').on('click', function(event) {
-            var href = event.currentTarget.href;
-            if(href.indexOf("#") === href.length - 1) {
-                event.preventDefault();
-            }
-        });
-    });
-
-</script>
-
-
-
-</body>
+                $('a').on('click', function(event) {
+                    var href = event.currentTarget.href;
+                    if (href.indexOf('#') === href.length - 1) {
+                        event.preventDefault();
+                    }
+                });
+            });
+        </script>
+    </body>
 </html>
